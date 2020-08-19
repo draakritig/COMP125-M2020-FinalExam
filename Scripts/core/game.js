@@ -19,7 +19,7 @@ let Game = (function () {
         { id: "5", src: "../Assets/images/5.png" },
         { id: "6", src: "../Assets/images/6.png" },
         { id: "backButton", src: "../Assets/images/startButton.png" },
-        { id: "background", src: "../Assets/images/bckgrnd.jpeg" },
+        { id: "background", src: "../Assets/images/bckgrnd.jpg" },
         { id: "blank", src: "../Assets/images/blank.png" },
         { id: "button", src: "../Assets/images/button.png" },
         { id: "nextButton", src: "../Assets/images/nextButton.png" },
@@ -29,7 +29,8 @@ let Game = (function () {
         { id: "startButton", src: "../Assets/images/startButton.png" },
         { id: "startOverButton", src: "../Assets/images/startOverButton.png" }
     ];
-    function Preload() {
+    function Preload() 
+    {
         console.log(`%c Preload Function`, "color: grey; font-size: 14px; font-weight: bold;");
         assets = new createjs.LoadQueue(); // asset container 
         assets.installPlugin(createjs.Sound); // supports sound preloading
@@ -112,9 +113,9 @@ let Game = (function () {
     function Main() {
         console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
         //Game Labels
-        diceLabel1 = new UIObjects.Label(randomNumber1, "40px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 20, true);
+        diceLabel1 = new UIObjects.Label("blank", "40px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 20, true);
         stage.addChild(diceLabel1);
-        diceLabel2 = new UIObjects.Label(randomNumber2, "40px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 20, true);
+        diceLabel2 = new UIObjects.Label("blank", "40px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 20, true);
         stage.addChild(diceLabel2);
         // Game Buttons
         rollButton = new UIObjects.Button("rollButton",Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
