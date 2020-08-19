@@ -19,7 +19,7 @@ let Game = (function () {
         { id: "5", src: "../Assets/images/5.png" },
         { id: "6", src: "../Assets/images/6.png" },
         { id: "backButton", src: "../Assets/images/startButton.png" },
-        { id: "background", src: "../Assets/images/background.png" },
+        { id: "background", src: "../Assets/images/bckgrnd.jpeg" },
         { id: "blank", src: "../Assets/images/blank.png" },
         { id: "button", src: "../Assets/images/button.png" },
         { id: "nextButton", src: "../Assets/images/nextButton.png" },
@@ -102,6 +102,8 @@ let Game = (function () {
         diceButton2.image.src =  imagesDice2; 
         diceLabel1.text = randomNumber1;
         diceLabel2.text = randomNumber2;
+        let result = randomNumber1 + randomNumber2;
+        console.log("Result is: " ,result);
     }
     /**
      * This is the main function of the Game (where all the fun happens)
