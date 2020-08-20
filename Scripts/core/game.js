@@ -1,5 +1,5 @@
 "use strict";
-let Game = (function () {
+let Game = (function(){
     // variable declarations
     let canvas = document.getElementsByTagName('canvas')[0];
     let stage;
@@ -11,7 +11,8 @@ let Game = (function () {
     let diceButton2;
     let randomNumber1 = 0;
     let randomNumber2 = 0;  
-    let assetManifest = [
+    let assetManifest = 
+    [
         { id: "1", src: "../Assets/images/1.png" },
         { id: "2", src: "../Assets/images/2.png" },
         { id: "3", src: "../Assets/images/3.png" },
@@ -41,7 +42,8 @@ let Game = (function () {
      * This method initializes the CreateJS (EaselJS) Library
      * It sets the framerate to 60 FPS and sets up the main Game Loop (Update)
      */
-    function Start() {
+    function Start() 
+    {
         console.log(`%c Start Function`, "color: grey; font-size: 14px; font-weight: bold;");
         stage = new createjs.Stage(canvas);
         createjs.Ticker.framerate = Config.Game.FPS;
@@ -104,7 +106,7 @@ let Game = (function () {
         diceLabel1.text = randomNumber1;
         diceLabel2.text = randomNumber2;
         let result = randomNumber1 + randomNumber2;
-        console.log("Result is: " ,result);
+        console.log("Result is: " ,result);      
     }
     /**
      * This is the main function of the Game (where all the fun happens)
@@ -113,9 +115,9 @@ let Game = (function () {
     function Main() {
         console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
         //Game Labels
-        diceLabel1 = new UIObjects.Label("blank", "40px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 20, true);
+        diceLabel1 = new UIObjects.Label(randomNumber1, "40px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 20, true);
         stage.addChild(diceLabel1);
-        diceLabel2 = new UIObjects.Label("blank", "40px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 20, true);
+        diceLabel2 = new UIObjects.Label(randomNumber2, "40px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 20, true);
         stage.addChild(diceLabel2);
         // Game Buttons
         rollButton = new UIObjects.Button("rollButton",Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
@@ -127,6 +129,7 @@ let Game = (function () {
         rollButton.on("click", rollButton_clicked)()
         {
             console.log("roll button clicked");
+           
         };
     
     }

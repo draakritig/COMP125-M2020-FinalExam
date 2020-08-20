@@ -1,19 +1,24 @@
-let Game = (function(){
 
-    // variable declarations
+let Game = (function()
+{
+    // Game variable declarations
     let canvas:HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
     let stage:createjs.Stage;
     let assets: createjs.LoadQueue;
-
+    let diceImage1 : string;
+    let diceImage2 : string;
+    //Game labels
     let diceLabel1: UIObjects.Label;
     let diceLabel2: UIObjects.Label;
+    //Game buttons
     let rollButton: UIObjects.Button;
     let diceButton1: UIObjects.Button;
     let diceButton2: UIObjects.Button;
+    //Random number declarations
     let randomNumber1 = 0;
     let randomNumber2 = 0;    
 
-    let assetManifest = 
+    let assetManifest : Core.Item[] = 
     [
         {id:"1", src:"../Assets/images/1.png"},
         {id:"2", src:"../Assets/images/2.png"},
@@ -65,6 +70,13 @@ let Game = (function(){
     {
         stage.update();
     }
+   
+     // Generation of Random numbers
+    function generateRandom():void
+    {
+        randomNumber1 = Math.floor((Math.random() * 6) + 1);
+        randomNumber2 = Math.floor((Math.random() * 6) + 1);
+    } 
     function switchImage(dicesImg: number): string 
     {
         var imageSrc;
@@ -95,24 +107,16 @@ let Game = (function(){
         return imageSrc;
     }
 
-    function generateRandom():void
-    {
-        randomNumber1 = Math.floor((Math.random() * 6) + 1);
-        randomNumber2 = Math.floor((Math.random() * 6) + 1);
-    } 
+   
     function rollButton_clicked(): void 
     {
         generateRandom();
-
-        let imagesDice1 = switchImage(randomNumber1);
-        let imagesDice1 = switchImage(randomNumber2);
-        diceButton1 = imagesDice1;
-        diceButton2 = imagesDice2;
-        diceLabel1 = randomNumber1;
-        diceLabel2 = randomNumber2;
-
-        //main(imagesForDice1,imagesForDice1);
-        //stage.update();
+        diceImage1 = switchImage(randomNumber1);
+        diceImage2 = switchImage(randomNumber2);
+        diceButton1.image.innerText = diceImage1;
+        diceButton2.image.innerText = diceImage2;
+        diceLabel1.labelString = randomNumber1.toString();
+        diceLabel2.labelString = randomNumber2.toString();
     }
 
     /**
@@ -123,9 +127,9 @@ let Game = (function(){
     {
         console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
         //Game Labels
-        diceLabel1 = new UIObjects.Label("blank", "40px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 20, true);
+        diceLabel1 = new UIObjects.Label(randomNumber1.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 20, true);
         stage.addChild(diceLabel1);
-        diceLabel2 = new UIObjects.Label("blank", "40px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 20, true);
+        diceLabel2 = new UIObjects.Label(randomNumber2.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 20, true);
         stage.addChild(diceLabel2);
         // Game Buttons
         rollButton = new UIObjects.Button("rollButton",Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
@@ -142,6 +146,5 @@ let Game = (function(){
     }
 
     window.addEventListener('load', Preload);
-
-
 })();
+
