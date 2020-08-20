@@ -1,3 +1,10 @@
+/**
+ * File Name: COMP125-M2020-FinalExam
+ * Author's Name: Aakriti Gupta
+ * Student ID: 301103413
+ * Date: August 20,2020
+ * Program Description: Game Functionality Page (The Dice Roller)
+ */
 "use strict";
 let Game = (function(){
     // Game variable declarations
@@ -32,7 +39,7 @@ let Game = (function(){
     ];
     function Preload() 
     {
-        console.log(`%c Preload Function`, "color: grey; font-size: 14px; font-weight: bold;");
+        console.log(`%c Preload Function`, "color: cyan; font-size: 14px; font-weight: bold;");
         assets = new createjs.LoadQueue(); // asset container 
         assets.installPlugin(createjs.Sound); // supports sound preloading
         assets.loadManifest(assetManifest);
@@ -44,7 +51,7 @@ let Game = (function(){
      */
     function Start() 
     {
-        console.log(`%c Start Function`, "color: grey; font-size: 14px; font-weight: bold;");
+        console.log(`%c Start Function`, "color: cyan; font-size: 14px; font-weight: bold;");
         stage = new createjs.Stage(canvas);
         createjs.Ticker.framerate = Config.Game.FPS;
         createjs.Ticker.on('tick', Update);
@@ -65,16 +72,13 @@ let Game = (function(){
     {
         return Math.floor(Math.random()*(6)+1);
     }
-    // This function will change the images based on random numbers generated
-   
-   
     /**
-     * This is the main function of the Game (where all the fun happens)
+     * This is the main function of the Game 
      *
      */
     function Main() 
     {
-        console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
+        console.log(`%c Main Function`, "color: cyan; font-size: 14px; font-weight: bold;");
         // Game Background
         gameBackground = new Core.GameObject("background", Config.Game.CENTER_X, Config.Game.CENTER_Y, true);
         stage.addChild(gameBackground);
@@ -85,23 +89,21 @@ let Game = (function(){
         stage.addChild(startOverButton);
         rollButton.on("click", () =>
         {
-            console.log("roll button clicked");
+            console.log("Roll Button clicked");
             let randomNumber1 =  generateRandom();
             let randomNumber2 = generateRandom();
             let result = randomNumber1 + randomNumber2;
             
-               //to remove previously rolled dices and their respective lables
+               //Removing all the previous dice rollings and labels
                 stage.removeChild(diceImage1, diceImage2, diceLabel1, diceLabel2,resultLabel);
-                //adds the first dice to left of the stage
+                //Adding Dice images
                 diceImage1 = new Core.GameObject(randomNumber1.toString(), Config.Game.CENTER_X - 200, Config.Game.CENTER_Y - 120, true);
                 stage.addChild(diceImage1);
-                //adds the second dice to right of the stage
                 diceImage2 = new Core.GameObject(randomNumber2.toString(), Config.Game.CENTER_X + 200, Config.Game.CENTER_Y - 120, true);
                 stage.addChild(diceImage2);
-                //adds the label below left dice
+                 //Adding Dice labels
                 diceLabel1 = new UIObjects.Label(randomNumber1.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X - 200, Config.Game.CENTER_Y, true);
                 stage.addChild(diceLabel1);
-                //adds the label below right dice
                 diceLabel2 = new UIObjects.Label(randomNumber2.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X + 200, Config.Game.CENTER_Y, true);
                 stage.addChild(diceLabel2);
                 resultLabel = new UIObjects.Label(result.toString(), "30px", "Consolas", "#000000", Config.Game.CENTER_X, Config.Game.CENTER_Y + 50, true);
@@ -115,11 +117,10 @@ let Game = (function(){
 
         startOverButton.on("click", ()=>
         {
+            console.log("StartOver Button clicked");
             stage.removeChild(diceImage1, diceImage2, diceLabel1, diceLabel2, resultLabel)
-            
             diceImage1 = new Core.GameObject("beginGame", Config.Game.CENTER_X - 200, Config.Game.CENTER_Y - 120, true);
             stage.addChild(diceImage1);
-
             diceImage2 = new Core.GameObject("beginGame", Config.Game.CENTER_X + 200, Config.Game.CENTER_Y - 120, true);
             stage.addChild(diceImage2);
 
