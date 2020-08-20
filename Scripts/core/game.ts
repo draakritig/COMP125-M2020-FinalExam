@@ -5,37 +5,31 @@ let Game = (function()
     let canvas:HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
     let stage:createjs.Stage;
     let assets: createjs.LoadQueue;
-    let diceImage1 : string;
-    let diceImage2 : string;
     //Game labels
     let diceLabel1: UIObjects.Label;
     let diceLabel2: UIObjects.Label;
+    let resultLabel: UIObjects.Label;
     //Game buttons
     let rollButton: UIObjects.Button;
-    let diceButton1: UIObjects.Button;
-    let diceButton2: UIObjects.Button;
-    //Random number declarations
-    let randomNumber1 = 0;
-    let randomNumber2 = 0;    
+    let startOverButton : UIObjects.Button;
+    //Game dices
+    let diceImage1 : Core.GameObject;
+    let diceImage2 : Core.GameObject;
+    //Game Background
+    let gameBackground : Core.GameObject;
 
-    let assetManifest : Core.Item[] = 
+    let assetManifest = 
     [
-        {id:"1", src:"../Assets/images/1.png"},
-        {id:"2", src:"../Assets/images/2.png"},
-        {id:"3", src:"../Assets/images/3.png"},
-        {id:"4", src:"../Assets/images/4.png"},
-        {id:"5", src:"../Assets/images/5.png"},
-        {id:"6", src:"../Assets/images/6.png"},
-        {id:"backButton", src:"../Assets/images/startButton.png"},
-        {id:"background", src:"../Assets/images/bckgrnd.jpg"},
-        {id:"blank", src:"../Assets/images/blank.png"},
-        {id:"button", src:"../Assets/images/button.png"},
-        {id:"nextButton", src:"../Assets/images/nextButton.png"},
-        {id:"placeholder", src:"../Assets/images/placeholder.png"},
-        {id:"resetButton", src:"../Assets/images/resetButton.png"},
-        {id:"rollButton", src:"../Assets/images/rollButton.png"},
-        {id:"startButton", src:"../Assets/images/startButton.png"},
-        {id:"startOverButton", src:"../Assets/images/startOverButton.png"}
+        {id:"1", src:"./Assets/images/1.png"},
+        {id:"2", src:"./Assets/images/2.png"},
+        {id:"3", src:"./Assets/images/3.png"},
+        {id:"4", src:"./Assets/images/4.png"},
+        {id:"5", src:"./Assets/images/5.png"},
+        {id:"6", src:"./Assets/images/6.png"},
+        {id:"background", src:"./Assets/images/background3.jpg"},
+        {id:"beginGame", src:"./Assets/images/beginGame.png"},
+        {id:"rollButton", src:"./Assets/images/rollButton.png"},
+        {id:"startOverButton", src:"./Assets/images/startOverButton.png"}
     ];
 
     function Preload():void
@@ -70,55 +64,12 @@ let Game = (function()
     {
         stage.update();
     }
-   
-     // Generation of Random numbers
-    function generateRandom():void
-    {
-        randomNumber1 = Math.floor((Math.random() * 6) + 1);
-        randomNumber2 = Math.floor((Math.random() * 6) + 1);
-    } 
-    function switchImage(dicesImg: number): string 
-    {
-        var imageSrc;
-        switch (dicesImg) {
-            case 0:
-                imageSrc = "../Assets/images/blank.png";
-                break;
-            case 1:
-                imageSrc = "../Assets/images/1.png";
-                break;
-            case 2:
-                imageSrc = "../Assets/images/2.png";
-                break;
-            case 3:
-                imageSrc = "../Assets/images/3.png";
-                break;
-            case 4:
-                imageSrc = "../Assets/images/4.png";
-                break;
-            case 5:
-                imageSrc = "../Assets/images/5.png";
-                break;
-            case 6:
-                imageSrc = "../Assets/images/6.png";
-                break;
-        }
 
-        return imageSrc;
+    // Function generating random numbers 
+    function generateRandom()
+    {
+        return Math.floor(Math.random()*(6)+1);
     }
-
-   
-    function rollButton_clicked(): void 
-    {
-        generateRandom();
-        diceImage1 = switchImage(randomNumber1);
-        diceImage2 = switchImage(randomNumber2);
-        diceButton1.image.innerText = diceImage1;
-        diceButton2.image.innerText = diceImage2;
-        diceLabel1.labelString = randomNumber1.toString();
-        diceLabel2.labelString = randomNumber2.toString();
-    }
-
     /**
      * This is the main function of the Game (where all the fun happens)
      *
@@ -126,22 +77,55 @@ let Game = (function()
     function Main():void
     {
         console.log(`%c Main Function`, "color: grey; font-size: 14px; font-weight: bold;");
-        //Game Labels
-        diceLabel1 = new UIObjects.Label(randomNumber1.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X + 150, Config.Game.CENTER_Y + 20, true);
-        stage.addChild(diceLabel1);
-        diceLabel2 = new UIObjects.Label(randomNumber2.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X - 150, Config.Game.CENTER_Y + 20, true);
-        stage.addChild(diceLabel2);
+        // Game Background
+        gameBackground = new Core.GameObject("background", Config.Game.CENTER_X, Config.Game.CENTER_Y, true);
+        stage.addChild(gameBackground);
         // Game Buttons
         rollButton = new UIObjects.Button("rollButton",Config.Game.CENTER_X, Config.Game.CENTER_Y + 100, true);
         stage.addChild(rollButton);
-        diceButton1 = new UIObjects.Button("1",Config.Game.CENTER_X + 150, Config.Game.CENTER_Y - 100, true);
-        stage.addChild(diceButton1);
-        diceButton2 = new UIObjects.Button("2",Config.Game.CENTER_X - 150, Config.Game.CENTER_Y - 100, true);
-        stage.addChild(diceButton2);
-        rollButton.on("click", rollButton_clicked)()
+        startOverButton = new UIObjects.Button("startOverButton",Config.Game.CENTER_X, Config.Game.CENTER_Y + 200, true);
+        stage.addChild(rollButton);
+        rollButton.on("click", ()=>
         {
-            console.log("roll button clicked");
-        };
+                console.log("roll button clicked");
+                let randomNumber1 =  generateRandom();
+                let randomNumber2 = generateRandom();
+                let result = randomNumber1 + randomNumber2;
+                
+               //to remove previously rolled dices and their respective lables
+                stage.removeChild(diceImage1, diceImage2, diceLabel1, diceLabel2, resultLabel);
+                //adds the first dice to left of the stage
+                diceImage1 = new Core.GameObject(randomNumber1.toString(), Config.Game.CENTER_X - 200, Config.Game.CENTER_Y - 120, true);
+                stage.addChild(diceImage1);
+                //adds the second dice to right of the stage
+                diceImage2 = new Core.GameObject(randomNumber2.toString(), Config.Game.CENTER_X + 200, Config.Game.CENTER_Y - 120, true);
+                stage.addChild(diceImage2);
+                //adds the label below left dice
+                diceLabel1 = new UIObjects.Label(randomNumber1.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X - 200, Config.Game.CENTER_Y, true);
+                stage.addChild(diceLabel1);
+                //adds the label below right dice
+                diceLabel2 = new UIObjects.Label(randomNumber2.toString(), "40px", "Consolas", "#000000", Config.Game.CENTER_X + 200, Config.Game.CENTER_Y, true);
+                stage.addChild(diceLabel2);
+                resultLabel = new UIObjects.Label(result.toString(), "30px", "Consolas", "#000000", Config.Game.CENTER_X, Config.Game.CENTER_Y + 50, true);
+                stage.addChild(resultLabel);
+        });
+
+        diceImage1 = new Core.GameObject("beginGame", Config.Game.CENTER_X - 200, Config.Game.CENTER_Y - 120, true);
+        stage.addChild(diceImage1);
+        diceImage2 = new Core.GameObject("beginGame", Config.Game.CENTER_X + 200, Config.Game.CENTER_Y - 120, true);
+        stage.addChild(diceImage2); 
+
+        startOverButton.on("click", ()=>
+        {
+            stage.removeChild(diceImage1, diceImage2, diceLabel1, diceLabel2, resultLabel)
+            
+            diceImage1 = new Core.GameObject("beginGame", Config.Game.CENTER_X - 200, Config.Game.CENTER_Y - 120, true);
+            stage.addChild(diceImage1);
+
+            diceImage2 = new Core.GameObject("beginGame", Config.Game.CENTER_X + 200, Config.Game.CENTER_Y - 120, true);
+            stage.addChild(diceImage2);
+
+        });
     
     }
 
